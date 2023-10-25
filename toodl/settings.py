@@ -23,7 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+<<<<<<< HEAD
 SECRET_KEY = os.getenv("SECRET_KEY")
+=======
+# SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = "d5b636af5e481d0674b5c6a2f6df57a014d77710c17c3c0d"
+>>>>>>> 1243e22 (setting db connection variables, temp disable env key with static key)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -81,11 +86,19 @@ WSGI_APPLICATION = "toodl.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
+<<<<<<< HEAD
         "NAME": os.getenv("PGDATABASE"),
         "USER": os.getenv("PGUSER"),
         "PASSWORD": os.getenv("PGPASSWORD"),
         "HOST": os.getenv("PGHOST"),
         "PORT": os.getenv("PGPORT"),
+=======
+        "NAME": "toodlapp",
+        "USER": "admin",
+        "PASSWORD": "admin",
+        "HOST": "localhost",
+        "PORT": "5432",
+>>>>>>> 1243e22 (setting db connection variables, temp disable env key with static key)
     }
 }
 
