@@ -1,5 +1,5 @@
 .env
 venv*
-/toodl/__pycache__
-/home/__pycache__
-_pycache_/*
+/toodl/__pycache__/*
+/home/__pycache__/*
+home/migrations/__pycache__/*
