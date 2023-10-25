@@ -1,17 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My Website</title>
-    <link rel="stylesheet" href="./style.css">
-    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <meta charset='utf-8' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          // Define calendar events here. Figure out how to implement with db.
+          events: [
+            {
+              title: 'Test 1',
+              start: '2023-10-25T10:00:00',
+              end: '2023-10-25T12:00:00'
+            },
+            {
+              title: 'Test 2',
+              start: '2023-10-27T14:00:00',
+              end: '2023-10-27T16:00:00'
+            },
+          ]
+        });
+        calendar.render();
+      });
+
+    </script>
   </head>
   <body>
-    <main>
-        <h1>Welcome to my amazing website</h1>  
-    </main>
-	<script src="index.js"></script>
+    <div id='calendar'></div>
   </body>
 </html>
