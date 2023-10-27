@@ -1,2 +1,4 @@
 .env
 venv*
+/home/__pycache__
+/toodl/__pycache__
