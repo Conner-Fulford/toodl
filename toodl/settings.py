@@ -79,11 +79,11 @@ WSGI_APPLICATION = "toodl.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": BASE_DIR / "toodlapp",
-        "USER": 'admin',
-        "PASSWORD": 'admin',
-        "HOST": 'localhost',
-        "PORT": '',
+        "NAME": "toodlserver",
+        "USER": os.getenv('PGUSER'),
+        "PASSWORD": os.getenv('PGPASSWORD'),
+        "HOST": os.getenv('PGHOST'),
+        "PORT": os.getenv('PGPORT'),
     }
 }
 
