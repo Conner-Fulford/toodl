@@ -64,4 +64,4 @@ jobs:
         with:
           app-name: 'toodl'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_895E2163F345428BB549BAA033336ADB }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8522EE12A2EC41E0ADCFC7495B402478 }}
