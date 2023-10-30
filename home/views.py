@@ -4,3 +4,8 @@ from django.shortcuts import render
 def calendar(request):
     # Render the HTML template index.html
     return render(request, 'calendar.html')
+
+# Create your views here.
+def index(request):
+    # Render the HTML template index.html
+    return render(request, 'index.html')
