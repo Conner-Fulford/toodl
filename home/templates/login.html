@@ -4,6 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
   <title>AdminLTE 3 | Log in (v2)</title>
 
   <!-- Google Font: Source Sans Pro -->
@@ -14,18 +17,45 @@
   <link rel="stylesheet" href="{% static 'plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+  <style>
+    body,h1,h2 {font-family: "Comfortaa", sans-serif;}
+    body, html {
+      height: 100%;
+      color: #3d8ae9;
+      line-height: 2;
+    }
+    .title {
+      font-family: "Monoton", sans-serif;
+      font-size: 2000%;
+      color: #3d8ae9;
+    }
+    .margin{
+      padding: 70px;
+      text-align: center;
+    }
+    
+    </style>
 </head>
+<div class="w3-top">
+  <div class="w3-bar" id="Navbar">
+    <a href="../" class="w3-bar-item w3-button">HOME</a>
+    <a href="#" class="w3-bar-item w3-button">LOGIN </a>
+    <a href="../register" class="w3-bar-item w3-button">CREATE ACCOUNT</a>
+    </a>
+  </div>
+</div>
 <body class="hold-transition login-page">
 <div class="login-box">
+  
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="../index.html" class="h1">TOODL</a>
+      <a href="../" class="h1">TOODL</a>
     </div>
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="../../index3.html" method="post">
+      <form action="#" method="post">
         <div class="input-group mb-3">
           <input type="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
@@ -70,7 +100,7 @@
       <!-- /.social-auth-links -->
 
       <p class="mb-1">
-        <a href="forgot-password.html">I forgot my password</a>
+        <a href="#">I forgot my password</a>
       </p>
       <p class="mb-0">
         <a href="../register" class="text-center">Register a new membership</a>
