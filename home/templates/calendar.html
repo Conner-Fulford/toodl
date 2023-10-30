@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.9/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.9/index.global.min.js"></script>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          // TODO: Use eventClick function to show event information in separate pop-up
+          eventClick: function(info) {
+            alert('Event: ' + info.event.title);
+            alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+            alert('View: ' + info.view.type);
+          },
+          
+          // The headers for the calendar. Refer to dayGrid and timeGrid plugins documentation at https://fullcalendar.io/docs/plugin-index
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          },
+
+          // Define calendar events here. TODO: Figure out how to implement with db.
+          events: 
+          [
+            {
+              title: 'Test 1',
+              start: '2023-10-25T00:00:00',
+              end: '2023-10-25T01:00:00'
+            },
+            {
+              title: 'Test 2',
+              start: '2023-10-25T00:00:00',
+              end: '2023-10-25T01:00:00'
+            },
+            {
+              title: 'Test 3',
+              start: '2023-10-25T03:00:00',
+              end: '2023-10-25T05:45:00'
+            },
+            {
+              title: 'Test 4',
+              start: '2023-10-27T14:00:00',
+              end: '2023-10-27T16:00:00'
+            },
+          ]
+        });
+        calendar.render();
+      });
+
+    </script>
+  </head>
+  <body>
+    <div id='calendar'></div>
+  </body>
+</html>

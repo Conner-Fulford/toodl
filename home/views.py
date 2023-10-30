@@ -1,5 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+
+# Create your views here.
+def calendar(request):
+    # Render the HTML template index.html
+    return render(request, 'calendar.html')
 
 # Create your views here.
 def login(request):
@@ -9,3 +13,6 @@ def login(request):
 def register(request):
     # Render the HTML template index.html
     return render(request, 'register.html')
+
+def index(request):
+    return render(request, 'index.html')
