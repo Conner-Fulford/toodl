@@ -1,7 +1,7 @@
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from home.models import CustomUser
 from django.contrib import messages
 
 
@@ -41,7 +41,7 @@ def register(request):
         terms = request.POST.get("terms")
         try:
             if terms is not None and retype_password == password:
-                user = User.objects.create_user(
+                user = CustomUser.objects.create_user(
                     username=username, password=password, email=email
                 )
                 user.save()
@@ -51,6 +51,8 @@ def register(request):
             error_message = str(error)
             if "unique constraint" in error_message and "username" in error_message:
                 messages.info(request, "Username already exits.")
+            elif "unique constraint" in error_message and "email" in error_message:
+                messages.info(request, "Email already exist.")
             else:
                 messages.info(request, "An error occurred while reigstering.")
 
@@ -60,3 +62,8 @@ def register(request):
 
 def index(request):
     return render(request, "index.html")
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("index")
