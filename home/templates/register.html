@@ -43,6 +43,7 @@
       <a href="../" class="w3-bar-item w3-button">HOME</a>
       <a href="../login" class="w3-bar-item w3-button">LOGIN </a>
       <a href="#" class="w3-bar-item w3-button">CREATE ACCOUNT</a>
+      <a href="../calendar" class="w3-bar-item w3-button">CALENDAR</a>
       </a>
     </div>
   </div>
@@ -53,25 +54,32 @@
     </div>
     <div class="card-body">
       <p class="login-box-msg">Register a new membership</p>
-
+      {% if messages %}
+      <div class="alert alert-danger">
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
+      {% endif %}
       <form action="#" method="post">
+        {% csrf_token %}
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Full name">
+          <input type="text" class="form-control" name="username" placeholder="Username">
           <div class="input-group-append">
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input type="email" class="form-control" name="email" placeholder="Email">
           <div class="input-group-append">
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" name="password" placeholder="Password">
           <div class="input-group-append">
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Retype password">
+          <input type="password" class="form-control" name="retype_password" placeholder="Retype password">
           <div class="input-group-append">
           </div>
         </div>

@@ -34,8 +34,15 @@ body, html {
 <div class="w3-top">
   <div class="w3-bar" id="Navbar">
     <a href="#" class="w3-bar-item w3-button">HOME</a>
-    <a href="login" class="w3-bar-item w3-button">LOGIN </a>
-    <a href="register" class="w3-bar-item w3-button">CREATE ACCOUNT</a>
+    {% if not request.user.is_authenticated %}
+      <a href="login" class="w3-bar-item w3-button">LOGIN </a>
+      <a href="register" class="w3-bar-item w3-button">CREATE ACCOUNT</a>
+    {% else %}
+    <span class="w3-bar-item w3-button" style="float: right;">
+      <a style="text-decoration: none" href="logout">LOGOUT</a>
+    </span>
+    {% endif %}
+    <a href="calendar" class="w3-bar-item w3-button">CALENDAR</a>
     </a>
   </div>
 </div>

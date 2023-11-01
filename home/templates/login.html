@@ -41,11 +41,13 @@
     <a href="../" class="w3-bar-item w3-button">HOME</a>
     <a href="#" class="w3-bar-item w3-button">LOGIN </a>
     <a href="../register" class="w3-bar-item w3-button">CREATE ACCOUNT</a>
+    <a href="../calendar" class="w3-bar-item w3-button">CALENDAR</a>
     </a>
   </div>
 </div>
 <body class="hold-transition login-page">
 <div class="login-box">
+  
   
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
@@ -54,15 +56,22 @@
     </div>
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>
-
+      {% if messages %}
+      <div class="alert alert-danger">
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
+      {% endif %}
       <form action="#" method="post">
+        {% csrf_token %}
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input type="text" class="form-control" name="username" placeholder="Username">
           <div class="input-group-append">
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" name="password" placeholder="Password">
           <div class="input-group-append">
           </div>
         </div>
