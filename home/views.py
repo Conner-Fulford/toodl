@@ -40,6 +40,8 @@ def register(request) -> HttpResponse | HttpResponseRedirect:
         terms = request.POST.get("terms")
         if retype_password != password:
             messages.info(request, "Passwords don't match. Try again.")
+        if terms is None:
+            messages.info(request, "Must agree to the terms.")
         try:
             if terms is not None and retype_password == password:
                 validate_password(password)
