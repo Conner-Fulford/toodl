@@ -3,8 +3,6 @@
   <head>
     <meta charset='utf-8' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.9/index.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.9/index.global.min.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
@@ -39,33 +37,20 @@
           },
 
           // Define calendar events here. TODO: Figure out how to implement with db.
-          events: 
-          [
-            {
-              title: 'Test 1',
-              start: '2023-10-25T00:00:00',
-              end: '2023-10-25T01:00:00'
-            },
-            {
-              title: 'Test 2',
-              start: '2023-10-25T00:00:00',
-              end: '2023-10-25T01:00:00'
-            },
-            {
-              title: 'Test 3',
-              start: '2023-10-25T03:00:00',
-              end: '2023-10-25T05:45:00'
-            },
-            {
-              title: 'Test 4',
-              start: '2023-10-27T14:00:00',
-              end: '2023-10-27T16:00:00'
-            },
-          ]
-        });
-        calendar.render();
-      });
+         events: [],
 
+         eventSources: [{
+          url: "/get_events/",
+          method: "GET",
+          failure: function() {
+            console.log("Failed to fetch events.");
+            alert("Failed to fetch events.");
+          },
+         },
+        ],
+      });
+        calendar.render();
+    });
     </script>
   </head>
   <body>
@@ -78,5 +63,13 @@
       </div>
     </div>
     <div id='calendar'></div>
+    <div class="event-form">
+      <h3>Create a New Event</h3>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Event</button>
+      </form>
+    </div>
   </body>
 </html>

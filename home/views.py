@@ -5,15 +5,47 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from home.models import CustomUser
+from django.http import JsonResponse
+from home.models import CustomUser, Event
+from .forms import EventForm
 
 
+@login_required
 def calendar(request) -> HttpResponse | HttpResponseRedirect:
     """Function to return the calendar view if user is authenticated"""
+    if request.method == "POST":
+        form = EventForm(request.POST)
+        if form.is_valid():
+            new_event = form.save(commit=False)
+            new_event.user = request.user
+            new_event.save()
+            form = EventForm()
+
+    else:
+        form = EventForm()
+
+    events = Event.objects.filter(user=request.user)
+    return render(request, "calendar.html", {"events": events, "form": form})
+
+
+@login_required
+def get_events(request):
     if not request.user.is_authenticated:
-        return redirect("/login")
-    return render(request, "calendar.html")
+        return JsonResponse({"error": "User not authenticated"})
+
+    events = Event.objects.filter(user=request.user)
+    event_data = []
+    for event in events:
+        event_data.append(
+            {
+                "title": event.title,
+                "start": event.startTime.isoformat(),
+                "end": event.endTime.isoformat(),
+            }
+        )
+    return JsonResponse(event_data, safe=False)
 
 
 def login_page(request) -> HttpResponse | HttpResponseRedirect:
