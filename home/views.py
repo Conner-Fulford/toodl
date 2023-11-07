@@ -2,7 +2,7 @@
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.decorators import login_required
@@ -40,12 +40,20 @@ def get_events(request):
     for event in events:
         event_data.append(
             {
+                "id": event.id,
                 "title": event.title,
                 "start": event.startTime.isoformat(),
                 "end": event.endTime.isoformat(),
             }
         )
     return JsonResponse(event_data, safe=False)
+
+
+def delete_event(request, event_id):
+    if "event_id" in request.POST:
+        event = get_object_or_404(Event, pk=event_id)
+        event.delete()
+    return redirect("calendar")
 
 
 def login_page(request) -> HttpResponse | HttpResponseRedirect:
