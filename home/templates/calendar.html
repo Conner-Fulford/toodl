@@ -16,19 +16,50 @@
         color: #3d8ae9;
         line-height: 2;
       }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        overflow: auto;
+      }
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+      }
+      .close {
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
     </style>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
+        var modal = document.getElementById('eventModal');
+        var closeModal = document.getElementById('closeModal');
+        var eventTitle = document.getElementById('eventTitle');
+        var eventStart = document.getElementById('eventStart');
+        var eventEnd = document.getElementById('eventEnd');
+        var deleteEventBtn = document.getElementById('deleteEvent');
+        var selectedEventInfo = null;
         const calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'dayGridMonth',
-          // TODO: Use eventClick function to show event information in separate pop-up
           eventClick: function(info) {
-            alert('Event: ' + info.event.title);
-            alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-            alert('View: ' + info.view.type);
-          },
-          
+            eventTitle.innerText = info.event.title;
+            eventStart.innerText = info.event.start.toISOString();
+            eventEnd.innerText = info.event.end.toISOString();
+            modal.style.display = "block";
+            selectedEventInfo = info;
+        },
           // The headers for the calendar. Refer to dayGrid and timeGrid plugins documentation at https://fullcalendar.io/docs/plugin-index
           headerToolbar: {
             left: 'prev,next today',
@@ -36,7 +67,6 @@
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
           },
 
-          // Define calendar events here. TODO: Figure out how to implement with db.
          events: [],
 
          eventSources: [{
@@ -49,11 +79,25 @@
          },
         ],
       });
+      closeModal.addEventListener('click', function() {
+          modal.style.display = "none";
+        });
         calendar.render();
+
     });
+    
     </script>
   </head>
   <body>
+    <div id="eventModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2 id="eventTitle"></h2>
+        <p>Start Time: <span id="eventStart"></span></p>
+        <p>End Time: <span id="eventEnd"></span></p>
+        <button id="deleteEvent">Delete Event</button>       
+      </div>
+    </div>
     <div class="w3-top">
       <div class="w3-bar" id="Navbar">
         <a href="../" class="w3-bar-item w3-button">HOME</a>
