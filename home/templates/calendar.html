@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang='en'>
+  {% load static %}
 
 <head>
   <meta charset='utf-8' />
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
+
   <style>
     #calendar {
       margin-top: 50px;
@@ -96,25 +100,34 @@
       });
     });
   </script>
+
 </head>
 
 <body>
+  
   <div id='calendar'></div>
   {% for event in events %}
   <div id="eventModal" class="modal">
+    <div class="modal-dialog">
+
     <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
-      <h2 id="eventTitle"></h2>
-      <p>Event Id: <span id="eventId"></span></p>
-      <p>Start Time: <span id="eventStart"></span></p>
-      <p>End Time: <span id="eventEnd"></span></p>
-      <form method="post" action="" id="deleteEventForm">
-        {% csrf_token %}
-        <input type="hidden" id="event_id" name="event_id" value="{{ event.id }}">
-        <button type="submit">Delete</button>
-      </form>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" id="closeModal">&times;</button>
+        <h2 class="modal-title" id="eventTitle"></h2>
+      </div>
+      <div class="modal-body">
+        <p>Event Id: <span id="eventId"></span></p>
+        <p>Start Time: <span id="eventStart"></span></p>
+        <p>End Time: <span id="eventEnd"></span></p>
+        <form method="post" action="" id="deleteEventForm">
+          {% csrf_token %}
+          <input type="hidden" id="event_id" name="event_id" value="{{ event.id }}">
+          <button type="submit">Delete</button>
+        </form>
+      </div>
     </div>
   </div>
+  </div></div>
   {% endfor %}
   <div class="w3-top">
     <div class="w3-bar" id="Navbar">
@@ -124,14 +137,35 @@
       </span>
     </div>
   </div>
-  <div class="event-form">
-    <h3>Create a New Event</h3>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Create Event</button>
-    </form>
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Event</button>
+
+  <!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Event</h4>
+      </div>
+      <div class="modal-body">
+        <div class="event-form">
+          <h3>Create a New Event</h3>
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Create Event</button>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
   </div>
+</div>
 </body>
 
 </html>
