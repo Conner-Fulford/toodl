@@ -42,8 +42,9 @@ def get_events(request):
             {
                 "id": event.id,
                 "title": event.title,
-                "start": event.startTime.isoformat(),
-                "end": event.endTime.isoformat(),
+                "description": event.description,
+                "start": event.startTime,
+                "end": event.endTime,
             }
         )
     return JsonResponse(event_data, safe=False)
