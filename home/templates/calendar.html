@@ -46,6 +46,12 @@
         var eventEnd = document.getElementById("eventEnd");
         var deleteEventBtn = document.getElementById("deleteEvent");
         var selectedEventInfo = null;
+        const clearEventFormFields = function () {
+          document.getElementById("id_title").value = "";
+          document.getElementById("id_description").value = "";
+          document.getElementById("id_startTime").value = "";
+          document.getElementById("id_endTime").value = "";
+        };
         const calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: "dayGridMonth",
           // Defines what happens when an event is clicked on the calendar. Refer to eventClick documentation at https://fullcalendar.io/docs/eventClick
@@ -78,6 +84,7 @@
           },
           // Adds the ability to click on a day for the Add Event modal. Refer to dateClick documentation at https://fullcalendar.io/docs/dateClick
           dateClick: function (info) {
+            clearEventFormFields();
             $("#createEventModal").modal("show");
             var clickedDate = info.date;
             var formattedDate = moment(clickedDate).format("YYYY-MM-DDTHH:mm");
@@ -89,6 +96,9 @@
             addEvents: {
               text: "add event",
               click: function () {
+                clearEventFormFields();
+                document.getElementById("id_startTime").value = "";
+                document.getElementById("id_endTime").value = "";
                 $("#createEventModal").modal("show");
               },
             },
