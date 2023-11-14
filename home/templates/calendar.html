@@ -80,7 +80,7 @@
           dateClick: function (info) {
             $("#createEventModal").modal("show");
             var clickedDate = info.date;
-
+            var formattedDate = moment(clickedDate).format("YYYY-MM-DDTHH:mm");
             document.getElementById("id_startTime").value = formattedDate;
             document.getElementById("id_endTime").value = formattedDate;
           },
