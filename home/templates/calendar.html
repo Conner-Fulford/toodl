@@ -10,6 +10,7 @@
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
     <link
       rel="stylesheet"
@@ -40,6 +41,7 @@
         var modal = document.getElementById("eventModal");
         var closeModal = document.getElementById("closeModal");
         var eventTitle = document.getElementById("eventTitle");
+        var eventDescription = document.getElementById("eventDescription");
         var eventStart = document.getElementById("eventStart");
         var eventEnd = document.getElementById("eventEnd");
         var deleteEventBtn = document.getElementById("deleteEvent");
@@ -49,10 +51,21 @@
           // Defines what happens when an event is clicked on the calendar. Refer to eventClick documentation at https://fullcalendar.io/docs/eventClick
           eventClick: function (info) {
             eventTitle.innerText = info.event.title;
-            eventStart.innerText = info.event.start;
-            eventEnd.innerText = info.event.end;
+            eventDescription.innerText = info.event.extendedProps.description;
+            const options = {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              timeZoneName: "short",
+            };
+            const formatter = new Intl.DateTimeFormat("en-US", options);
+            eventStart.innerText = formatter.format(info.event.start);
+            eventEnd.innerText = formatter.format(info.event.end);
             modal.style.display = "block";
             var eventId = info.event.id;
+            console.log("Event Description", eventDescription);
             console.log("Event ID:", eventId);
             document.getElementById("eventId").innerText = eventId;
             document.getElementById("event_id").value = eventId;
@@ -67,7 +80,7 @@
           dateClick: function (info) {
             $("#createEventModal").modal("show");
             var clickedDate = info.date;
-            var formattedDate = clickedDate.toISOString().slice(0, 16); // Format as "YYYY-MM-DDTHH:mm"
+
             document.getElementById("id_startTime").value = formattedDate;
             document.getElementById("id_endTime").value = formattedDate;
           },
@@ -118,6 +131,7 @@
           </div>
           <div class="modal-body">
             <p>Event Id: <span id="eventId"></span></p>
+            <p>Description: <span id="eventDescription"></span></p>
             <p>Start Time: <span id="eventStart"></span></p>
             <p>End Time: <span id="eventEnd"></span></p>
             <form method="post" action="" id="deleteEventForm">
