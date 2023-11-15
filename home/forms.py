@@ -21,3 +21,9 @@ class EventForm(forms.ModelForm):
         labels = {
             "description": "Description",  # Set the label for the description field
         }
+
+
+class ImportICSForm(forms.Form):
+    ics_file = forms.FileField(
+        label="Select an .ics file", help_text="File should be in .ics format"
+    )
