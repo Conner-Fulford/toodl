@@ -1,5 +1,6 @@
 """Modules providing django-specific functionality"""
 import icalendar
+from icalendar import Calendar, Event as ICalEvent
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -75,6 +76,26 @@ def import_events(request):
         else:
             messages.error(request, "Invalid form submission.")
     return redirect("calendar")
+
+
+@login_required
+def export_events(request):
+    if request.method == "GET":
+        events = Event.objects.filter(user=request.user)
+        cal = Calendar()
+        cal.add("prodid", "-//Toodl//EN")
+        cal.add("version", "2.0")
+        for event in events:
+            ical_event = ICalEvent()
+            ical_event.add("summary", event.title)
+            ical_event.add("description", event.description)
+            ical_event.add("dtstart", event.startTime)
+            ical_event.add("dtend", event.endTime)
+            ical_event.add("uid", str(event.id))
+            cal.add_component(ical_event)
+        response = HttpResponse(cal.to_ical(), content_type="text/calendar")
+        response["Content-Disposition"] = 'attachment; filename="toodl.ics"'
+        return response
 
 
 def delete_event(request, event_id):
