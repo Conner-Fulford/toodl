@@ -71,8 +71,6 @@
             eventEnd.innerText = formatter.format(info.event.end);
             modal.style.display = "block";
             var eventId = info.event.id;
-            console.log("Event Description", eventDescription);
-            console.log("Event ID:", eventId);
             document.getElementById("eventId").innerText = eventId;
             document.getElementById("event_id").value = eventId;
             var deleteEventForm = document.getElementById("deleteEventForm");
@@ -182,6 +180,11 @@
               </form>
             </div>
             <div id="exportSection">
+              <label for="id_ics_file">Export events with the button below:</label>
+              <form method="get" action="/export_events/">
+                {% csrf_token %}
+                <button type="submit">Export Events</button>
+            </form>
             </div>
           </div>
         </div>
