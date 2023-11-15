@@ -9,5 +9,6 @@ urlpatterns = [
     path("calendar/", views.calendar, name="calendar"),
     path("logout/", views.logout_view, name="logout"),
     path("get_events/", views.get_events, name="get_events"),
+    path("import_events/", views.import_events, name="import_events"),
     path("delete_event/<int:event_id>/", views.delete_event, name="delete_event"),
 ]

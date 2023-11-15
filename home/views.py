@@ -1,4 +1,5 @@
 """Modules providing django-specific functionality"""
+import icalendar
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -8,8 +9,9 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+from django.utils import timezone
 from home.models import CustomUser, Event
-from .forms import EventForm
+from .forms import EventForm, ImportICSForm
 
 
 @login_required
@@ -48,6 +50,31 @@ def get_events(request):
             }
         )
     return JsonResponse(event_data, safe=False)
+
+
+@login_required
+def import_events(request):
+    if request.method == "POST":
+        form = ImportICSForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                ics_file = request.FILES["ics_file"]
+                cal = icalendar.Calendar.from_ical(ics_file.read())
+                for event_data in cal.walk("VEVENT"):
+                    event = Event(
+                        user=request.user,
+                        title=str(event_data.get("summary", "")),
+                        description=str(event_data.get("description", "")),
+                        startTime=timezone.make_aware(event_data.get("dtstart").dt),
+                        endTime=timezone.make_aware(event_data.get("dtend").dt),
+                    )
+                    event.save()
+                messages.success(request, "Events imported successfully.")
+            except Exception as e:
+                messages.error(request, f"Failed to import events. Error: {str(e)}")
+        else:
+            messages.error(request, "Invalid form submission.")
+    return redirect("calendar")
 
 
 def delete_event(request, event_id):
