@@ -102,13 +102,19 @@
                 $("#createEventModal").modal("show");
               },
             },
+            importExportICS: {
+              text: "import/export ics",
+              click: function() {
+                $("#importExportModal").modal("show");
+              },
+            },
           },
           // The headers for the calendar. Refer to dayGrid and timeGrid plugins documentation at https://fullcalendar.io/docs/plugin-index
           headerToolbar: {
             left: "prev,next today",
             center: "title",
             right:
-              "addEvents multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay",
+              "importExportICS addEvents multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay",
           },
           events: [],
           eventSources: [
@@ -159,13 +165,27 @@
       </div>
     </div>
     {% endfor %}
-    <div id="icsImport">
-      <form method="post" action="/import_events/" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label for="id_ics_file">Select an .ics file:</label>
-        <input type="file" name="ics_file" accept=".ics" required id="id_ics_file">
-        <button type="submit">Import Events</button>
-    </form>
+    <div id="importExportModal" class="modal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Import/Export ICS</h4>
+          </div>
+          <div class="modal-body">
+            <div id="importSection">
+              <form method="post" action="/import_events/" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="id_ics_file">Select your ics file to import:</label>
+                <input type="file" name="ics_file" accept=".ics" required id="id_ics_file">
+                <button type="submit">Import Events</button>
+              </form>
+            </div>
+            <div id="exportSection">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="w3-top">
       <div class="w3-bar" id="Navbar">
