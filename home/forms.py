@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-from django import forms
-from .models import Event
-
-
-class EventForm(forms.ModelForm):
-    class Meta:
-        model = Event
-        fields = ["title", "description", "startTime", "endTime"]
-=======
 from django import forms
 from .models import Event
 
@@ -37,4 +27,3 @@ class ImportICSForm(forms.Form):
     ics_file = forms.FileField(
         label="Select an .ics file", help_text="File should be in .ics format"
     )
->>>>>>> 84e7f3c4ac28bf4f10bd3e1fad0b3f3f84fff188
