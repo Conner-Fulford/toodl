@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 asgiref==3.7.2
 azure-core==1.29.5
 azure-storage-blob==12.18.3
@@ -26,3 +27,36 @@ tomli==2.0.1
 typing_extensions==4.8.0
 urllib3==2.0.7
 whitenoise==6.6.0
+=======
+asgiref==3.7.2
+azure-core==1.29.5
+azure-storage-blob==12.18.3
+black==23.10.1
+certifi==2023.7.22
+cffi==1.16.0
+charset-normalizer==3.3.1
+click==8.1.7
+cryptography==41.0.5
+Django==4.2.6
+django-storages==1.14.2
+gunicorn==21.2.0
+icalendar==5.0.11
+idna==3.4
+isodate==0.6.1
+mypy-extensions==1.0.0
+packaging==23.2
+pathspec==0.11.2
+platformdirs==3.11.0
+psycopg2-binary==2.9.9
+pycparser==2.21
+python-dateutil==2.8.2
+python-dotenv==1.0.0
+pytz==2023.3.post1
+requests==2.31.0
+six==1.16.0
+sqlparse==0.4.4
+tomli==2.0.1
+typing_extensions==4.8.0
+urllib3==2.0.7
+whitenoise==6.6.0
+>>>>>>> 84e7f3c4ac28bf4f10bd3e1fad0b3f3f84fff188

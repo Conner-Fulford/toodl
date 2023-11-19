@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang='en'>
   {% load static %}
@@ -169,3 +170,233 @@
 </body>
 
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Monoton"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Comfortaa"
+    />
+    <style>
+      #calendar {
+        margin-top: 50px;
+      }
+      #Navbar {
+        font-family: "Comfortaa", sans-serif;
+        height: 100%;
+        color: #3d8ae9;
+        line-height: 2;
+        background-color: #ffff;
+      }
+      label {
+        display: block;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var calendarEl = document.getElementById("calendar");
+        var modal = document.getElementById("eventModal");
+        var closeModal = document.getElementById("closeModal");
+        var eventTitle = document.getElementById("eventTitle");
+        var eventDescription = document.getElementById("eventDescription");
+        var eventStart = document.getElementById("eventStart");
+        var eventEnd = document.getElementById("eventEnd");
+        var deleteEventBtn = document.getElementById("deleteEvent");
+        var selectedEventInfo = null;
+        const clearEventFormFields = function () {
+          document.getElementById("id_title").value = "";
+          document.getElementById("id_description").value = "";
+          document.getElementById("id_startTime").value = "";
+          document.getElementById("id_endTime").value = "";
+        };
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: "dayGridMonth",
+          // Defines what happens when an event is clicked on the calendar. Refer to eventClick documentation at https://fullcalendar.io/docs/eventClick
+          eventClick: function (info) {
+            eventTitle.innerText = info.event.title;
+            eventDescription.innerText = info.event.extendedProps.description;
+            const options = {
+              year: "numeric",
+              month: "numeric",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              timeZoneName: "short",
+            };
+            const formatter = new Intl.DateTimeFormat("en-US", options);
+            eventStart.innerText = formatter.format(info.event.start);
+            eventEnd.innerText = formatter.format(info.event.end);
+            modal.style.display = "block";
+            var eventId = info.event.id;
+            document.getElementById("eventId").innerText = eventId;
+            document.getElementById("event_id").value = eventId;
+            var deleteEventForm = document.getElementById("deleteEventForm");
+            deleteEventForm.action = "{% url 'delete_event' 0 %}".replace(
+              "0",
+              eventId
+            );
+            selectedEventInfo = info;
+          },
+          // Adds the ability to click on a day for the Add Event modal. Refer to dateClick documentation at https://fullcalendar.io/docs/dateClick
+          dateClick: function (info) {
+            clearEventFormFields();
+            $("#createEventModal").modal("show");
+            var clickedDate = info.date;
+            var formattedDate = moment(clickedDate).format("YYYY-MM-DDTHH:mm");
+            document.getElementById("id_startTime").value = formattedDate;
+            document.getElementById("id_endTime").value = formattedDate;
+          },
+          // Custom button to call the createEventModal. Refer to customButtons documentation at https://fullcalendar.io/docs/customButtons
+          customButtons: {
+            addEvents: {
+              text: "add event",
+              click: function () {
+                clearEventFormFields();
+                document.getElementById("id_startTime").value = "";
+                document.getElementById("id_endTime").value = "";
+                $("#createEventModal").modal("show");
+              },
+            },
+            importExportICS: {
+              text: "import/export ics",
+              click: function() {
+                $("#importExportModal").modal("show");
+              },
+            },
+          },
+          // The headers for the calendar. Refer to dayGrid and timeGrid plugins documentation at https://fullcalendar.io/docs/plugin-index
+          headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right:
+              "importExportICS addEvents multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay",
+          },
+          events: [],
+          eventSources: [
+            {
+              url: "/get_events/",
+              method: "GET",
+              failure: function () {
+                console.log("Failed to fetch events.");
+                alert("Failed to fetch events.");
+              },
+            },
+          ],
+        });
+        calendar.render();
+        closeModal.addEventListener("click", function () {
+          modal.style.display = "none";
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="calendar"></div>
+    {% for event in events %}
+    <div id="eventModal" class="modal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" id="closeModal">&times;</span>
+            <h2 id="eventTitle"></h2>
+          </div>
+          <div class="modal-body">
+            <p>Event Id: <span id="eventId"></span></p>
+            <p>Description: <span id="eventDescription"></span></p>
+            <p>Start Time: <span id="eventStart"></span></p>
+            <p>End Time: <span id="eventEnd"></span></p>
+            <form method="post" action="" id="deleteEventForm">
+              {% csrf_token %}
+              <input
+                type="hidden"
+                id="event_id"
+                name="event_id"
+                value="{{ event.id }}"
+              />
+              <button type="submit">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <div id="importExportModal" class="modal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Import/Export ICS</h4>
+          </div>
+          <div class="modal-body">
+            <div id="importSection">
+              <form method="post" action="/import_events/" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="id_ics_file">Select your ics file to import:</label>
+                <input type="file" name="ics_file" accept=".ics" required id="id_ics_file">
+                <button type="submit">Import Events</button>
+              </form>
+            </div>
+            <div id="exportSection">
+              <label for="id_ics_file">Export events with the button below:</label>
+              <form method="get" action="/export_events/">
+                {% csrf_token %}
+                <button type="submit">Export Events</button>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w3-top">
+      <div class="w3-bar" id="Navbar">
+        <a
+          style="text-decoration: none; position: fixed"
+          href="../"
+          class="w3-bar-item w3-button"
+          >HOME</a
+        >
+        <span class="w3-bar-item w3-button" style="float: right">
+          <a style="text-decoration: none" href="../logout">LOGOUT</a>
+        </span>
+      </div>
+    </div>
+    <div id="createEventModal" class="modal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+            <h4 class="modal-title">Add Event</h4>
+          </div>
+          <div class="modal-body">
+            <div class="event-form">
+              <h3>Create a New Event</h3>
+              <form method="post">
+                {% csrf_token %} {{ form.as_p }}
+                <button type="submit">Create Event</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+>>>>>>> 84e7f3c4ac28bf4f10bd3e1fad0b3f3f84fff188
