@@ -34,7 +34,7 @@ def calendar(request) -> HttpResponse | HttpResponseRedirect:
 
 
 @login_required
-def get_events(request):
+def get_events(request) -> JsonResponse:
     if not request.user.is_authenticated:
         return JsonResponse({"error": "User not authenticated"})
 
@@ -54,7 +54,7 @@ def get_events(request):
 
 
 @login_required
-def import_events(request):
+def import_events(request) -> HttpResponseRedirect:
     if request.method == "POST":
         form = ImportICSForm(request.POST, request.FILES)
         if form.is_valid():
@@ -79,7 +79,7 @@ def import_events(request):
 
 
 @login_required
-def export_events(request):
+def export_events(request) -> HttpResponse:
     if request.method == "GET":
         events = Event.objects.filter(user=request.user)
         cal = Calendar()
@@ -98,7 +98,7 @@ def export_events(request):
         return response
 
 
-def delete_event(request, event_id):
+def delete_event(request, event_id) -> HttpResponseRedirect:
     if "event_id" in request.POST:
         event = get_object_or_404(Event, pk=event_id)
         event.delete()
