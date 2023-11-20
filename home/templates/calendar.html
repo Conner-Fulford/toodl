@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   {% load static %}
+  <title>TOODL | Calendar View</title>
   <head>
     <meta charset="utf-8" />
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js"></script>
@@ -114,6 +115,8 @@
             right:
               "importExportICS addEvents multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay",
           },
+          contentHeight:"auto",
+          handleWindowResize:true,
           events: [],
           eventSources: [
             {
