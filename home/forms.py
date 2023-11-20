@@ -19,8 +19,18 @@ class EventForm(forms.ModelForm):
             ),
         }
         labels = {
-            "description": "Description",  # Set the label for the description field
+            "description": "Description",
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_time = cleaned_data.get("startTime")
+        end_time = cleaned_data.get("endTime")
+
+        if start_time and end_time and end_time <= start_time:
+            raise forms.ValidationError("End time must be after the start time.")
+
+        return cleaned_data
 
 
 class ImportICSForm(forms.Form):
