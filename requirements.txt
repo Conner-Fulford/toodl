@@ -10,6 +10,7 @@ cryptography==41.0.5
 Django==4.2.6
 django-storages==1.14.2
 gunicorn==21.2.0
+icalendar==5.0.11
 idna==3.4
 isodate==0.6.1
 mypy-extensions==1.0.0
@@ -18,7 +19,9 @@ pathspec==0.11.2
 platformdirs==3.11.0
 psycopg2-binary==2.9.9
 pycparser==2.21
+python-dateutil==2.8.2
 python-dotenv==1.0.0
+pytz==2023.3.post1
 requests==2.31.0
 six==1.16.0
 sqlparse==0.4.4

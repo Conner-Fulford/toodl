@@ -1,19 +1,108 @@
 """Modules providing django-specific functionality"""
+import icalendar
+from icalendar import Calendar, Event as ICalEvent
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from home.models import CustomUser
+from django.http import JsonResponse
+from django.utils import timezone
+from home.models import CustomUser, Event
+from .forms import EventForm, ImportICSForm
 
 
+@login_required
 def calendar(request) -> HttpResponse | HttpResponseRedirect:
     """Function to return the calendar view if user is authenticated"""
+    if request.method == "POST":
+        form = EventForm(request.POST)
+        if form.is_valid():
+            new_event = form.save(commit=False)
+            new_event.user = request.user
+            new_event.save()
+            form = EventForm()
+
+    else:
+        form = EventForm()
+
+    events = Event.objects.filter(user=request.user)
+    return render(request, "calendar.html", {"events": events, "form": form})
+
+
+@login_required
+def get_events(request) -> JsonResponse:
     if not request.user.is_authenticated:
-        return redirect("/login")
-    return render(request, "calendar.html")
+        return JsonResponse({"error": "User not authenticated"})
+
+    events = Event.objects.filter(user=request.user)
+    event_data = []
+    for event in events:
+        event_data.append(
+            {
+                "id": event.id,
+                "title": event.title,
+                "description": event.description,
+                "start": event.startTime,
+                "end": event.endTime,
+            }
+        )
+    return JsonResponse(event_data, safe=False)
+
+
+@login_required
+def import_events(request) -> HttpResponseRedirect:
+    if request.method == "POST":
+        form = ImportICSForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                ics_file = request.FILES["ics_file"]
+                cal = icalendar.Calendar.from_ical(ics_file.read())
+                for event_data in cal.walk("VEVENT"):
+                    event = Event(
+                        user=request.user,
+                        title=str(event_data.get("summary", "")),
+                        description=str(event_data.get("description", "")),
+                        startTime=timezone.make_aware(event_data.get("dtstart").dt),
+                        endTime=timezone.make_aware(event_data.get("dtend").dt),
+                    )
+                    event.save()
+                messages.success(request, "Events imported successfully.")
+            except Exception as e:
+                messages.error(request, f"Failed to import events. Error: {str(e)}")
+        else:
+            messages.error(request, "Invalid form submission.")
+    return redirect("calendar")
+
+
+@login_required
+def export_events(request) -> HttpResponse:
+    if request.method == "GET":
+        events = Event.objects.filter(user=request.user)
+        cal = Calendar()
+        cal.add("prodid", "-//Toodl//EN")
+        cal.add("version", "2.0")
+        for event in events:
+            ical_event = ICalEvent()
+            ical_event.add("summary", event.title)
+            ical_event.add("description", event.description)
+            ical_event.add("dtstart", event.startTime)
+            ical_event.add("dtend", event.endTime)
+            ical_event.add("uid", str(event.id))
+            cal.add_component(ical_event)
+        response = HttpResponse(cal.to_ical(), content_type="text/calendar")
+        response["Content-Disposition"] = 'attachment; filename="toodl.ics"'
+        return response
+
+
+def delete_event(request, event_id) -> HttpResponseRedirect:
+    if "event_id" in request.POST:
+        event = get_object_or_404(Event, pk=event_id)
+        event.delete()
+    return redirect("calendar")
 
 
 def login_page(request) -> HttpResponse | HttpResponseRedirect:
@@ -40,6 +129,8 @@ def register(request) -> HttpResponse | HttpResponseRedirect:
         terms = request.POST.get("terms")
         if retype_password != password:
             messages.info(request, "Passwords don't match. Try again.")
+        if terms is None:
+            messages.info(request, "Must agree to the terms.")
         try:
             if terms is not None and retype_password == password:
                 validate_password(password)
