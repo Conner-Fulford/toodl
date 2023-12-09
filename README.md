@@ -1,5 +1,7 @@
 # Toodl
 Welcome to Toodl, a time management system.
+
+Located at <a href="https://toodl.azurewebsites.net/">toodl.azurewebsites.net
 <div>
   <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" title="Django" alt="Django"/>&nbsp;
   <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" title="PostgreSQL" alt="PostgreSQL"/>&nbsp;
