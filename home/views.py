@@ -18,16 +18,19 @@ from .forms import EventForm, ImportICSForm
 @login_required
 def calendar(request) -> HttpResponse | HttpResponseRedirect:
     """Function to return the calendar view if user is authenticated"""
-    if request.method == "POST":
-        form = EventForm(request.POST)
-        if form.is_valid():
-            new_event = form.save(commit=False)
-            new_event.user = request.user
-            new_event.save()
-            form = EventForm()
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            form = EventForm(request.POST)
+            if form.is_valid():
+                new_event = form.save(commit=False)
+                new_event.user = request.user
+                new_event.save()
+                form = EventForm()
 
+        else:
+            form = EventForm()
     else:
-        form = EventForm()
+        return redirect("login")
 
     events = Event.objects.filter(user=request.user)
     return render(request, "calendar.html", {"events": events, "form": form})
