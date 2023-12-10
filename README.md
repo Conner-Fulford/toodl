@@ -32,7 +32,100 @@ Note: Make sure you have Python installed and a valid Azure PostgreSQL database 
    python manage.py runserver
    ```
 
-Collaborators:
+## File Structure:
+```---  Folder Structure ---
+[toodl]
+    ├── [.devcontainer]
+        └── devcontainer.json
+    ├── .env.example
+    ├── .gitignore
+    ├── CONTRIBUTING.md
+    ├── [home]
+        ├── admin.py
+        ├── apps.py
+        ├── forms.py
+        ├── [migrations]
+            ├── 0001_initial.py
+            ├── __init__.py
+        ├── [migrations_old]
+            ├── 0001_initial.py
+            ├── 0003_alter_event_id.py
+            ├── 0004_alter_event_description_alter_event_endtime_and_more.py
+            ├── 0005_alter_event_id.py
+            └── __init__.py
+        ├── models.py
+        ├── [templates]
+            ├── calendar.html
+            ├── index.html
+            ├── login.html
+            └── register.html
+        ├── [tests]
+            ├── test_forms.py
+            ├── test_models.py
+            ├── test_urls.py
+            ├── test_views.py
+            └── __init__.py
+        ├── tests.py
+        ├── urls.py
+        ├── views.py
+        ├── __init__.py
+    ├── manage.py
+    ├── README.md
+    ├── requirements.txt
+    ├── [static]
+        ├── [dist]
+            ├── [css]
+                ├── <css files>
+            ├── [img]
+                ├── <css images>
+            └── [js]
+                ├── <javascript files>
+        └── [plugins]
+            ├── [bootstrap]
+                └── [js]
+                    ├── <javascript files>
+            ├── [fontawesome-free]
+                ├── [css]
+                    ├── <css files>
+                └── [webfonts]
+                    ├── <font files>
+            ├── [icheck-bootstrap]
+                ├── <css files>
+            └── [jquery]
+                ├── <javascript files>
+    ├── [staticfiles]
+        ├── [admin]
+            ├── [css]
+                ├── <css files>
+            ├── [img]
+                ├── <svg files>
+            └── [js]
+                ├── <javascript files>
+        ├── [dist]
+            ├── [css]
+                ├── <css files>
+            ├── [img]
+                ├── <img files>
+            └── [js]
+                ├── <javascript files>
+            ├── [fontawesome-free]
+                ├── [css]
+                    ├── <css files>
+                └── [webfonts]
+                    ├── <font files>
+            ├── [icheck-bootstrap]
+                ├── <css files>
+            └── [jquery]
+                ├── <javascript files>
+    └── [toodl]
+        ├── asgi.py
+        ├── azure_storage.py
+        ├── settings.py
+        ├── urls.py
+        ├── wsgi.py
+        ├── __init__.py
+```
+## Collaborators:
 ```
 Conner-Fulford; Conner Fulford;     DNF283
 4am-walking;    Chandler Matheny;   HTC878 
