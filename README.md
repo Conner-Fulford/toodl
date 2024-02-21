@@ -129,9 +129,9 @@ Note: Make sure you have Python installed and a valid Azure PostgreSQL database 
 ```
 ## Collaborators:
 ```
-Conner-Fulford; Conner Fulford;     DNF283
-4am-walking;    Chandler Matheny;   HTC878 
-Durantye;       Damion Mason;       DLB636
-VHT692;         Ian Powers;         VHT692
-utchaozhou;     Eric Chang;         KXM618
+Conner-Fulford; Conner Fulford;     
+4am-walking;    Chandler Matheny;    
+Durantye;       Damion Mason;       
+VHT692;         Ian Powers;         
+utchaozhou;     Eric Chang;         
 ```
